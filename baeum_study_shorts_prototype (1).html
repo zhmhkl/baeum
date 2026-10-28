@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>배움 | 교육 숏폼</title>
+<style>
+:root{--bg:#f5f7fb;--card:#fff;--ink:#172033;--muted:#718096;--line:#e5eaf2;--accent:#6258f5;--accent2:#8b7cff}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button,input,select,textarea{font:inherit}button{cursor:pointer}
+.app{max-width:1100px;margin:auto;min-height:100vh;display:grid;grid-template-columns:220px 1fr;gap:26px;padding:24px}
+.sidebar{position:sticky;top:24px;height:calc(100vh - 48px);background:var(--card);border:1px solid var(--line);border-radius:24px;padding:22px 16px;display:flex;flex-direction:column}
+.brand{font-size:25px;font-weight:850;letter-spacing:-1px;margin:0 10px 8px}.tagline{font-size:12px;color:var(--muted);margin:0 10px 28px}
+.nav{display:grid;gap:7px}.nav button{border:0;background:transparent;color:#5c667a;text-align:left;padding:13px 12px;border-radius:13px;font-weight:650}.nav button.active,.nav button:hover{background:#f0efff;color:var(--accent)}
+.side-note{margin-top:auto;background:#f5f4ff;border-radius:16px;padding:14px;font-size:12px;line-height:1.6;color:#55518b}
+main{min-width:0}.topbar{display:flex;align-items:center;justify-content:space-between;margin:3px 0 20px;gap:12px}.topbar h1{font-size:25px;letter-spacing:-.8px;margin:0}.topbar p{color:var(--muted);font-size:13px;margin:4px 0 0}.avatar{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:#e8e6ff;color:var(--accent);font-weight:800}
+.page{display:none}.page.active{display:block}.chips{display:flex;gap:8px;overflow:auto;padding:2px 0 16px}.chip{border:1px solid var(--line);background:white;border-radius:999px;padding:8px 14px;white-space:nowrap;color:#566176}.chip.active{background:var(--accent);color:white;border-color:var(--accent)}
+.feed-layout{display:grid;grid-template-columns:minmax(260px,430px) minmax(200px,1fr);gap:20px;align-items:start}.video-card{position:relative;overflow:hidden;border-radius:25px;min-height:590px;background:#10192e;color:white;box-shadow:0 12px 32px #1d2b481a;isolation:isolate}
+.visual{position:absolute;inset:0;z-index:-2;background:linear-gradient(180deg,#16365a 0%,#0e172a 55%,#07101f 100%);overflow:hidden}
+.visual:before{content:"";position:absolute;width:360px;height:360px;left:50%;top:12%;transform:translateX(-50%);border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff9 0 2%,#80c8ff 3% 5%,#2469a4 20%,#122849 58%,#091329 70%);box-shadow:0 0 70px #48aaff45}
+.visual:after{content:"";position:absolute;left:-15%;right:-15%;height:190px;bottom:14%;border-radius:50%;background:linear-gradient(160deg,#3b7bc7,#14294c 60%,#0b162b);transform:rotate(-10deg);box-shadow:0 -14px 45px #61b8ff22}
+.visual.math{background:linear-gradient(140deg,#452c78,#11172e 70%)}.visual.math:before{width:210px;height:210px;top:20%;background:repeating-conic-gradient(from 10deg,#ffcb8a 0 8deg,#a879e8 8deg 16deg);box-shadow:0 0 70px #b59aff55}.visual.history{background:linear-gradient(160deg,#824a2c,#1a1724 75%)}.visual.history:before{width:250px;height:250px;background:radial-gradient(circle at 50% 45%,#e9c17a,#8e4f30 55%,#39251f 70%)}.video-top{position:absolute;top:18px;left:18px;right:18px;display:flex;justify-content:space-between;align-items:center;font-size:13px}.video-top strong{font-size:19px}.icon-btn{border:0;background:#ffffff20;color:white;border-radius:50%;width:38px;height:38px;font-size:18px}.video-copy{position:absolute;left:22px;right:80px;bottom:28px}.subject{display:inline-block;background:#ffffff20;border:1px solid #ffffff25;border-radius:99px;padding:5px 9px;font-size:11px;margin-bottom:10px}.video-copy h2{font-size:25px;line-height:1.3;letter-spacing:-.7px;margin:0 0 9px}.video-copy p{font-size:13px;line-height:1.6;color:#e2e8f0;margin:0 0 14px}.creator{font-size:12px;color:#e2e8f0}.actions{position:absolute;right:15px;bottom:30px;display:grid;gap:15px;text-align:center}.actions button{border:0;background:transparent;color:white;font-size:21px}.actions small{display:block;font-size:10px;margin-top:3px}.feed-controls{display:flex;gap:9px;margin-top:12px}.primary,.secondary{border:0;border-radius:13px;padding:12px 16px;font-weight:750}.primary{background:var(--accent);color:white}.secondary{background:white;border:1px solid var(--line);color:var(--ink)}.side-panel{background:white;border:1px solid var(--line);border-radius:22px;padding:20px}.side-panel h3{margin:0 0 12px;font-size:17px}.side-panel p{font-size:13px;color:var(--muted);line-height:1.65}.quiz-option{display:block;width:100%;text-align:left;padding:12px;border:1px solid var(--line);border-radius:12px;background:white;margin:8px 0;color:var(--ink)}.quiz-option:hover{border-color:var(--accent);background:#f8f7ff}.result{font-size:13px;font-weight:700;margin-top:10px;min-height:20px}.searchbox{width:100%;border:1px solid var(--line);border-radius:13px;padding:13px 15px;background:white;margin-bottom:15px}.video-list{display:grid;gap:12px}.list-item{display:flex;align-items:center;gap:13px;padding:12px;background:white;border:1px solid var(--line);border-radius:16px}.thumb{width:78px;height:88px;border-radius:11px;flex-shrink:0;background:linear-gradient(145deg,#174a75,#12172b);display:grid;place-items:center;color:white;font-size:24px}.thumb.purple{background:linear-gradient(145deg,#7d4be2,#1b2142)}.thumb.orange{background:linear-gradient(145deg,#d78345,#422b34)}.list-item h3{font-size:14px;margin:0 0 5px}.list-item p{font-size:12px;color:var(--muted);margin:0}.form-card{background:white;border:1px solid var(--line);border-radius:22px;padding:22px;max-width:650px}.form-card label{display:block;font-weight:700;font-size:13px;margin:15px 0 7px}.form-card input,.form-card select,.form-card textarea{width:100%;padding:12px;border:1px solid var(--line);border-radius:12px;background:#fff}.form-card textarea{min-height:90px;resize:vertical}.dropzone{border:1.5px dashed #b8b5f8;background:#f8f7ff;border-radius:16px;padding:28px;text-align:center;color:#66618c}.profile-head{background:white;border:1px solid var(--line);border-radius:22px;padding:24px;display:flex;align-items:center;gap:16px}.profile-big{width:72px;height:72px;border-radius:24px;background:#e8e6ff;display:grid;place-items:center;font-size:30px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px}.stat{background:white;border:1px solid var(--line);border-radius:16px;padding:16px}.stat strong{font-size:22px;display:block}.stat span{font-size:12px;color:var(--muted)}.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#172033;color:white;padding:12px 18px;border-radius:12px;opacity:0;pointer-events:none;transition:.2s;z-index:10}.toast.show{opacity:1}.mobile-nav{display:none}
+@media(max-width:760px){.app{display:block;padding:14px 14px 88px}.sidebar{display:none}.topbar{margin:7px 2px 16px}.topbar h1{font-size:22px}.feed-layout{display:block}.video-card{min-height:min(68vh,650px);height:620px;max-height:72vh}.side-panel{margin-top:14px}.video-copy h2{font-size:22px}.mobile-nav{display:flex;position:fixed;bottom:0;left:0;right:0;background:#ffffffed;backdrop-filter:blur(12px);border-top:1px solid var(--line);justify-content:space-around;padding:9px 4px calc(9px + env(safe-area-inset-bottom));z-index:5}.mobile-nav button{border:0;background:none;color:#788195;font-size:11px;display:grid;gap:4px;justify-items:center}.mobile-nav button span{font-size:20px}.mobile-nav button.active{color:var(--accent)}.stats{gap:7px}.stat{padding:12px}.profile-head{padding:18px}}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">배움 <span style="color:var(--accent)">.</span></div>
+    <p class="tagline">짧은 영상으로 만나는 더 넓은 세상</p>
+    <nav class="nav">
+      <button class="active" data-page="home">▣　추천 피드</button>
+      <button data-page="explore">⌕　탐색하기</button>
+      <button data-page="upload">＋　영상 업로드</button>
+      <button data-page="saved">▤　저장한 영상</button>
+      <button data-page="profile">◉　내 프로필</button>
+    </nav>
+    <div class="side-note"><b>오늘의 작은 배움</b><br>짧은 영상 하나가 새로운 생각의 시작이 될 수 있어요.</div>
+  </aside>
+  <main>
+    <header class="topbar"><div><h1 id="pageTitle">추천 피드</h1><p id="pageSub">오늘은 어떤 지식을 발견할까요?</p></div><div class="avatar">배</div></header>
+
+    <section class="page active" id="page-home">
+      <div class="chips">
+        <button class="chip active" data-filter="전체">전체</button><button class="chip" data-filter="과학">🔬 과학</button><button class="chip" data-filter="수학">➗ 수학</button><button class="chip" data-filter="역사">🏛 역사</button><button class="chip" data-filter="영어">🔤 영어</button><button class="chip" data-filter="상식">💡 상식</button>
+      </div>
+      <div class="feed-layout">
+        <div>
+          <article class="video-card" id="videoCard">
+            <div class="visual" id="visual"></div>
+<video id="uploadedPlayer" controls playsinline
+       style="display:none"></video>
+            <div class="video-top"><strong>배움</strong><button class="icon-btn" id="nextVideo" title="다음 영상">↓</button></div>
+            <div class="video-copy"><span class="subject" id="vSubject">과학 · 45초</span><h2 id="vTitle">지구가 자전하면서 생기는 놀라운 현상</h2><p id="vDesc">우리가 매일 경험하지만 쉽게 지나치는 과학의 원리를 짧게 알아봐요.</p><div class="creator" id="vCreator">@지식한스푼 · 교육 콘텐츠</div></div>
+            <div class="actions"><div><button id="likeBtn" aria-label="좋아요">♡</button><small id="likes">1.2천</small></div><div><button id="commentBtn" aria-label="댓글">▢</button><small>댓글</small></div><div><button id="saveBtn" aria-label="저장">▣</button><small>저장</small></div><div><button id="shareBtn" aria-label="공유">↗</button><small>공유</small></div></div>
+          </article>
+          <div class="feed-controls"><button class="primary" id="quizJump">영상 관련 퀴즈 풀기</button><button class="secondary" id="nextBtn">다음 영상 →</button></div>
+        </div>
+        <aside class="side-panel" id="quizPanel"><h3>🧠 배운 내용 확인하기</h3><p id="quizQuestion">지구의 낮과 밤이 생기는 가장 직접적인 원인은 무엇일까요?</p><div id="quizOptions"><button class="quiz-option" data-correct="false">지구가 태양 주위를 공전하기 때문</button><button class="quiz-option" data-correct="true">지구가 자전하기 때문</button><button class="quiz-option" data-correct="false">달이 지구 주위를 돌기 때문</button></div><div class="result" id="quizResult"></div><p>영상으로 배운 내용을 간단한 문제로 확인해 보세요.</p></aside>
+      </div>
+    </section>
+
+    <section class="page" id="page-explore">
+      <input class="searchbox" id="searchInput" placeholder="영상 제목, 주제, 키워드 검색하기">
+      <div class="chips"><button class="chip active" data-explore="전체">전체</button><button class="chip" data-explore="과학">과학</button><button class="chip" data-explore="수학">수학</button><button class="chip" data-explore="역사">역사</button><button class="chip" data-explore="영어">영어</button></div>
+      <div class="video-list" id="exploreList"></div>
+    </section>
+
+    <section class="page" id="page-upload">
+      <div class="form-card"><h2 style="margin:0 0 6px">새로운 지식 공유하기</h2><p style="margin:0;color:var(--muted);font-size:13px">직접 만든 교육 영상을 등록하는 화면 예시예요.</p>
+        <label for="videoFile">영상 파일</label><div class="dropzone">＋<br><b>영상 파일을 선택하세요</b><br><small>실제 업로드 기능은 아직 연결되지 않았어요.</small><br><input type="file" id="videoFile" accept="video/*" style="margin-top:12px;max-width:100%"></div>
+        <label for="uploadTitle">영상 제목</label><input id="uploadTitle" placeholder="예: 1분 만에 이해하는 베르누이의 원리">
+        <label for="uploadSubject">과목</label><select id="uploadSubject"><option>과학</option><option>수학</option><option>역사</option><option>영어</option><option>상식</option></select>
+        <label for="uploadDesc">설명 및 참고 자료</label><textarea id="uploadDesc" placeholder="영상에서 배울 내용을 간단히 소개해 주세요."></textarea>
+        <p style="font-size:12px;color:var(--muted)">게시 전 콘텐츠 검토와 저작권 확인이 필요해요.</p><button class="primary" id="uploadSubmit">게시 미리보기</button>
+      </div>
+    </section>
+
+    <section class="page" id="page-saved"><div class="video-list" id="savedList"></div><p id="savedEmpty" style="color:var(--muted)">저장한 영상이 여기에 표시돼요. 피드에서 ▣ 버튼을 눌러 저장해 보세요.</p></section>
+
+    <section class="page" id="page-profile">
+      <div class="profile-head"><div class="profile-big">🧑‍🎓</div><div><h2 style="margin:0 0 5px">배움 탐험가</h2><p style="margin:0;color:var(--muted);font-size:13px">@learner · 오늘도 새로운 것을 배워요</p></div></div>
+      <div class="stats"><div class="stat"><strong id="learnedCount">0</strong><span>학습한 영상</span></div><div class="stat"><strong id="savedCount">0</strong><span>저장한 영상</span></div><div class="stat"><strong id="likedCount">0</strong><span>좋아요</span></div></div>
+      <div class="side-panel" style="margin-top:16px"><h3>이번 주 학습</h3><p>꾸준히 배우고, 마음에 드는 지식은 저장해 보세요. 이 통계는 현재 브라우저에서만 유지되는 데모예요.</p><div style="display:flex;gap:8px;align-items:end;height:70px;margin-top:18px"><div style="height:35%;background:#c8c4ff;border-radius:7px;flex:1"></div><div style="height:70%;background:#9d96ff;border-radius:7px;flex:1"></div><div style="height:48%;background:#c8c4ff;border-radius:7px;flex:1"></div><div style="height:85%;background:var(--accent);border-radius:7px;flex:1"></div><div style="height:55%;background:#c8c4ff;border-radius:7px;flex:1"></div><div style="height:30%;background:#c8c4ff;border-radius:7px;flex:1"></div><div style="height:20%;background:#c8c4ff;border-radius:7px;flex:1"></div></div><p style="font-size:11px">월　화　수　목　금　토　일</p></div>
+    </section>
+  </main>
+</div>
+<nav class="mobile-nav"><button class="active" data-page="home"><span>⌂</span>홈</button><button data-page="explore"><span>⌕</span>탐색</button><button data-page="upload"><span>＋</span>업로드</button><button data-page="saved"><span>▤</span>저장</button><button data-page="profile"><span>◉</span>프로필</button></nav>
+<div class="toast" id="toast"></div>
+<script>
+const videos=[
+ {subject:"과학",title:"지구가 자전하면서 생기는 놀라운 현상",desc:"우리가 매일 경험하지만 쉽게 지나치는 과학의 원리를 짧게 알아봐요.",creator:"@지식한스푼",duration:"45초",likes:"1.2천",kind:"",question:"지구의 낮과 밤이 생기는 가장 직접적인 원인은 무엇일까요?",options:[["지구가 태양 주위를 공전하기 때문",false],["지구가 자전하기 때문",true],["달이 지구 주위를 돌기 때문",false]]},
+ {subject:"수학",title:"피자 조각으로 이해하는 분수",desc:"분모와 분자가 무엇을 의미하는지 일상 속 예시로 알아봐요.",creator:"@수학한입",duration:"38초",likes:"842",kind:"math",question:"피자를 8조각으로 나누고 3조각을 먹었다면 먹은 양은?",options:[["3/8",true],["8/3",false],["3/5",false]]},
+ {subject:"역사",title:"고대 문명은 왜 강 주변에서 시작됐을까?",desc:"물과 농업, 교역이 문명의 성장에 어떤 역할을 했는지 알아봐요.",creator:"@역사산책",duration:"52초",likes:"956",kind:"history",question:"강 주변에서 초기 문명이 발달한 주요 이유는?",options:[["항상 기온이 같아서",false],["물과 비옥한 토지를 이용할 수 있어서",true],["산이 전혀 없어서",false]]},
+ {subject:"상식",title:"우리 뇌는 어떻게 기억을 만들까?",desc:"기억이 형성되는 과정과 반복 학습의 의미를 알아봐요.",creator:"@뇌과학노트",duration:"45초",likes:"2.1천",kind:"math",question:"기억을 오래 유지하는 데 도움이 되는 방법은?",options:[["한 번만 빠르게 읽기",false],["시간을 두고 반복해서 떠올리기",true],["잠을 줄이기",false]]}
+];
+
+const API_BASE = "";
+
+async function loadUploadedVideos() {
+  try {
+    const response = await fetch(`${API_BASE}/api/videos`);
+    if (!response.ok) throw new Error("영상 목록을 불러오지 못했어요.");
+
+    const data = await response.json();
+
+    const uploaded = data.videos.map(v => ({
+      id: v.id,
+      subject: v.subject || "상식",
+      title: v.title,
+      desc: v.description || "",
+      creator: "@배움 사용자",
+      duration: "업로드 영상",
+      likes: "0",
+      kind: "",
+      question: "이 영상에서 새롭게 배운 내용은 무엇인가요?",
+      options: [
+        ["영상을 보고 배운 내용을 생각해 보기", true],
+        ["영상을 보지 않고 추측하기", false]
+      ],
+      url: v.url
+    }));
+
+    videos.push(...uploaded);
+    renderExplore();
+  } catch (error) {
+    console.error("업로드 영상 불러오기 실패:", error);
+  }
+}
+
+let current=0;const saved=new Set(),liked=new Set(),seen=new Set();
+const $=id=>document.getElementById(id);
+function toast(msg){const t=$("toast");t.textContent=msg;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2100)}
+function renderVideo(){const v=videos[current];$("vSubject").textContent=v.subject+" · "+v.duration;$("vTitle").textContent=v.title;$("vDesc").textContent=v.desc;$("vCreator").textContent=v.creator+" · 교육 콘텐츠";$("likes").textContent=v.likes;
+$("visual").className = "visual " + (v.kind || "");
+
+const player = $("uploadedPlayer");
+
+if (v.url) {
+  player.src = v.url;
+  player.style.display = "block";
+  $("visual").style.display = "none";
+} else {
+  player.pause();
+  player.removeAttribute("src");
+  player.load();
+  player.style.display = "none";
+  $("visual").style.display = "flex";
+}
+$("likeBtn").textContent=liked.has(current)?"♥":"♡";$("saveBtn").textContent=saved.has(current)?"▣":"▤";$("quizQuestion").textContent=v.question;$("quizResult").textContent="";$("quizOptions").innerHTML=v.options.map(([text,correct])=>`<button class="quiz-option" data-correct="${correct}">${text}</button>`).join("");$("learnedCount").textContent=seen.size;$("savedCount").textContent=saved.size;$("likedCount").textContent=liked.size;seen.add(current);$("learnedCount").textContent=seen.size;document.querySelectorAll(".quiz-option").forEach(b=>b.addEventListener("click",()=>{if(b.dataset.correct==="true"){$("quizResult").textContent="정답이에요! 잘 이해했어요 🎉";$("quizResult").style.color="#16845b"}else{$("quizResult").textContent="다시 생각해 보세요. 영상을 확인해 봐요."; $("quizResult").style.color="#b45309"}}))}
+function next(){current=(current+1)%videos.length;renderVideo()}
+function showPage(name){document.querySelectorAll(".page").forEach(p=>p.classList.toggle("active",p.id==="page-"+name));document.querySelectorAll("[data-page]").forEach(b=>b.classList.toggle("active",b.dataset.page===name));const titles={home:["추천 피드","오늘은 어떤 지식을 발견할까요?"],explore:["탐색하기","관심 있는 주제의 영상을 찾아보세요."],upload:["영상 업로드","내가 아는 지식을 다른 사람과 나눠요."],saved:["저장한 영상","다시 보고 싶은 지식을 모아 보세요."],profile:["내 프로필","나의 학습 활동을 확인해 보세요."]};$("pageTitle").textContent=titles[name][0];$("pageSub").textContent=titles[name][1];if(name==="saved")renderSaved();if(name==="explore")renderExplore();if(name==="profile")renderVideo()}
+document.querySelectorAll("[data-page]").forEach(b=>b.addEventListener("click",()=>showPage(b.dataset.page)));
+$("nextVideo").addEventListener("click",next);$("nextBtn").addEventListener("click",next);
+$("likeBtn").addEventListener("click",()=>{liked.has(current)?liked.delete(current):liked.add(current);renderVideo();toast(liked.has(current)?"좋아요를 눌렀어요":"좋아요를 취소했어요")});
+$("saveBtn").addEventListener("click",()=>{saved.has(current)?saved.delete(current):saved.add(current);renderVideo();renderSaved();toast(saved.has(current)?"저장한 영상에 추가했어요":"저장에서 삭제했어요")});
+$("shareBtn").addEventListener("click",()=>{if(navigator.clipboard){navigator.clipboard.writeText(location.href).then(()=>toast("사이트 주소를 복사했어요")).catch(()=>toast("현재 사이트 주소: "+location.href))}else toast("현재 사이트 주소: "+location.href)});
+$("commentBtn").addEventListener("click",()=>toast("댓글 기능은 다음 개발 단계에서 연결할 수 있어요."));
+$("quizJump").addEventListener("click",()=>$("quizPanel").scrollIntoView({behavior:"smooth",block:"center"}));
+document.querySelectorAll("[data-filter]").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll("[data-filter]").forEach(x=>x.classList.remove("active"));b.classList.add("active");const f=b.dataset.filter;const found=videos.findIndex(v=>f==="전체"||v.subject===f);if(found>=0){current=found;renderVideo()}else toast("해당 분야의 영상은 준비 중이에요.")}));
+function renderExplore(){const q=($("searchInput").value||"").trim().toLowerCase();const list=videos.filter(v=>(v.title+v.desc+v.subject).toLowerCase().includes(q));$("exploreList").innerHTML=list.map(v=>`<div class="list-item"><div class="thumb ${v.kind}">▶</div><div><h3>${v.title}</h3><p>${v.subject} · ${v.duration} · ${v.creator}</p><p style="margin-top:6px">${v.desc}</p></div><button class="secondary" data-open="${videos.indexOf(v)}">보기</button></div>`).join("")||"<p>검색 결과가 없어요.</p>";document.querySelectorAll("[data-open]").forEach(b=>b.addEventListener("click",()=>{current=Number(b.dataset.open);renderVideo();showPage("home")}))}
+$("searchInput").addEventListener("input",renderExplore);
+document.querySelectorAll("[data-explore]").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll("[data-explore]").forEach(x=>x.classList.remove("active"));b.classList.add("active");$("searchInput").value=b.dataset.explore==="전체"?"":b.dataset.explore;renderExplore()}));
+function renderSaved(){const arr=[...saved].map(i=>videos[i]);$("savedEmpty").style.display=arr.length?"none":"block";$("savedList").innerHTML=arr.map(v=>`<div class="list-item"><div class="thumb ${v.kind}">▶</div><div><h3>${v.title}</h3><p>${v.subject} · ${v.duration} · ${v.creator}</p></div></div>`).join("")}
+
+$("uploadSubmit").addEventListener("click", async () => {
+  const title = $("uploadTitle").value.trim();
+  const file = $("videoFile").files[0];
+
+  if (!title) {
+    toast("영상 제목을 입력해 주세요.");
+    $("uploadTitle").focus();
+    return;
+  }
+
+  if (!file) {
+    toast("업로드할 영상 파일을 선택해 주세요.");
+    $("videoFile").focus();
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("video", file);
+  formData.append("title", title);
+  formData.append("subject", $("uploadSubject").value);
+  formData.append("description", $("uploadDesc").value);
+
+  try {
+    const response = await fetch("/api/videos", {
+  method: "POST",
+  body: formData
+});
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || "업로드에 실패했어요.");
+    }
+
+    toast("영상이 성공적으로 업로드됐어요!");
+    $("uploadTitle").value = "";
+    $("uploadDesc").value = "";
+    $("videoFile").value = "";
+  } catch (error) {
+    toast(error.message || "서버에 연결할 수 없어요.");
+  }
+});
+
+
+renderVideo();
+renderExplore();
+loadUploadedVideos();
+</script>
+</body>
+</html>
